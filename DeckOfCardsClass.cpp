@@ -152,9 +152,10 @@ public:
 
         // Since the card names will be the same for additional decks, we only need to duplicate pointers to the same
         // card names in order to create multiple decks.
+        int ptrCounter = 0;
         for (unsigned int deckCounter = 0; deckCounter < numDecks; deckCounter++) {
             for (unsigned int counter = 0; counter < singleDeckSize; counter++) {
-                m_shuffledPtrs[counter] = counter;
+                m_shuffledPtrs[ptrCounter++] = counter;
             }
         }
 
