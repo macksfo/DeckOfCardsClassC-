@@ -103,7 +103,7 @@ public:
        
         
         // Make sure decktype is lower case
-        for (string::size_type i; i < deckType.length(); i++) {
+        for (string::size_type i = 0; i < deckType.length(); i++) {
             deckType[i] = tolower(deckType[i]);
             }
 
