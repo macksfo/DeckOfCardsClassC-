@@ -11,14 +11,13 @@
 
 using namespace std;
 
-class DeckOfCards 
-{
-
 /*
 DeckOfCards will handle constructing a playing deck, shuffling, reshuffling, burning cards and returning (dealing) cards
 that a client application can then present anyway that it likes.  Client can query deckType, # of cards left, or deckSize.
 */
-    
+class DeckOfCards 
+{
+
     
 private:
     string m_deckType;
@@ -26,7 +25,7 @@ private:
     int m_cardsRemaining;
     int m_currentCard;
     vector<string> m_deck;
-        vector<int> m_shuffledPtrs;
+    vector<int> m_shuffledPtrs;
     static bool m_isntSeeded;
     
     
@@ -78,7 +77,7 @@ public:
            than 1, or greater than 10, it is set to 1.  If non-integer, it's rounded.
         */
         
-        // If someone wants to make Italian or German decks or even Tarot, they cn modify these
+        // If someone wants to make Italian or German decks or even Tarot, they can modify these
         // let's initialize the suits
         int numSuits = 4;
         string suit [4] = {"D", "C", "H", "S"};
@@ -100,8 +99,7 @@ public:
             srand(time(0)); 
             DeckOfCards::m_isntSeeded = false;
         }
-       
-        
+    
         // Make sure decktype is lower case
         for (string::size_type i = 0; i < deckType.length(); i++) {
             deckType[i] = tolower(deckType[i]);
@@ -147,7 +145,7 @@ public:
         }
         // Add the jokers, if any
         for (unsigned int jokerCounter = 0; jokerCounter < numJokers; jokerCounter++) {
-          m_deck[deckIndex++] = "J";
+          m_deck[deckIndex++] = "J ";
         }
 
         // Since the card names will be the same for additional decks, we only need to duplicate pointers to the same
@@ -234,3 +232,86 @@ public:
 bool DeckOfCards::m_isntSeeded = true;
 
 // end of class DeckOfCards
+
+
+// Derived class StandardDeck.  This utilizes the base class to create a standard deck of cards.
+//     Since most uses of a deck of cards involve discarding the jokers, you can argues that the default 
+//     numJokers should be zero.  However, the standard pack of cards comes with two jokers.  It's not my
+//     job to predict how the deck of cards will be used.  Since the default pack has two jokers, that is
+//     what I do.  The calling program can always specify {0} if they don't want jokers.
+class StandardDeck : public DeckOfCards
+{
+public:
+    StandardDeck(int numJokers = 2)
+          : DeckOfCards( "standard", numJokers, 1 )
+          {
+          }
+};
+
+
+// Derived class BlackjackDeck.  This utilizes the base class to create a deck of cards for Black Jack.
+//     Most casinos shuffle six packs of cards together to make it harder for players to count cards.
+//     However, the calling program can choose to use 1 - 10 decks shuffled together.
+class BlackjackDeck : public DeckOfCards
+{
+public:
+    BlackjackDeck(int numDecks = 6)
+          : DeckOfCards( "standard", 0, numDecks )
+          {
+          }
+};
+
+
+// Derived class JassDeck.  This utilizes the base class to create a deck of cards for Jass.
+//     Jass is a card game popular especially in Switzerland, but also Germany.  While the 
+//     German and Swiss decks tend to use slightly different suit names and/or colors for the suits,
+//     Jass can be played with a standard French deck using only the cards 6 - Ace.
+class JassDeck : public DeckOfCards
+{
+public:
+    JassDeck()
+          : DeckOfCards( "jass", 0, 1 )
+          {
+          }
+};
+
+
+// Derived class SkatDeck.  This utilizes the base class to create a deck of cards for Skat.
+//     Skat is the national card game of Germany.  While the German decks vary and use slightly
+//     different suit names and/or colors for the suits, Skat can be played with a standard French 
+//     deck using only the cards 7 - Ace.  The card game Piquet can also be played with a Skat deck.
+class SkatDeck : public DeckOfCards
+{
+public:
+    SkatDeck()
+          : DeckOfCards( "skat", 0, 1 )
+          {
+          }
+};
+
+
+// Derived class EuchreDeck.  This utilizes the base class to create a deck of cards for Euchre.
+//     Euchre is a trick-taking card game with several deck variations. 
+//     Standard Euchre uses the cards 9 - Ace plus one Joker.  Variations can eliminate the Joker 
+//     or use a Skat deck instead.  This class handles only the 24 card and 25 card decks.
+//     Otherwise, a calling porgram can use the SkatDeck class.
+class EuchreDeck : public DeckOfCards
+{
+public:
+    EuchreDeck(int numJokers = 1)
+          : DeckOfCards( "euchre", numJokers, 1 )
+          {
+          }
+};
+
+
+// Derived class PinochleDeck.  This utilizes the base class to create a deck of cards for Pinochle.
+//     Pinochle uses 2 sets of the cards 9 - Ace.
+class PinochleDeck : public DeckOfCards
+{
+public:
+    PinochleDeck()
+          : DeckOfCards( "euchre", 0, 2 )
+          {
+          }
+};
